@@ -5,6 +5,7 @@ import one.digitalinnovation.gof.model.ClienteRepository;
 import one.digitalinnovation.gof.model.Endereco;
 import one.digitalinnovation.gof.model.EnderecoRepository;
 import one.digitalinnovation.gof.service.ClienteService;
+import one.digitalinnovation.gof.service.KanyeService;
 import one.digitalinnovation.gof.service.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     private ViaCepService viaCepService;
+
+    @Autowired
+    private KanyeService kanyeService;
+
     @Override
     public Iterable<Cliente> buscarTodos() {
         return clienteRepository.findAll();
@@ -53,12 +58,17 @@ public class ClienteServiceImpl implements ClienteService {
 
     private void salvarClienteComCep(Cliente cliente) {
         String cep = cliente.getEndereco().getCep();
+
         Endereco endereco = enderecoRepository.findById(cep).orElseGet(()-> {
             Endereco novoEndereco = viaCepService.consultarCep(cep);
             enderecoRepository.save(novoEndereco);
             return novoEndereco;
         });
         cliente.setEndereco(endereco);
+
+        String fraseDia = kanyeService.recuperarFraseDia();
+        cliente.setFraseDia(fraseDia);
+        System.out.println(fraseDia);
         clienteRepository.save(cliente);
     }
 }

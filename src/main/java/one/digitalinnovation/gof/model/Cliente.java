@@ -14,6 +14,8 @@ public class Cliente {
     @ManyToOne
     private Endereco endereco;
 
+    private String fraseDia;
+
     public Long getId() {
         return id;
     }
@@ -36,5 +38,13 @@ public class Cliente {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getFraseDia() {
+        return fraseDia;
+    }
+
+    public void setFraseDia(String fraseDia) {
+        this.fraseDia = fraseDia;
     }
 }
